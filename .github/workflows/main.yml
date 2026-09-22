@@ -1,0 +1,25 @@
+name: De LaTeX a Web Automático
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Descargar el código
+      uses: actions/checkout@v4
+
+    - name: Convertir LaTeX a HTML con Pandoc
+      uses: docker://pandoc/core:latest
+      with:
+        args: >-
+          documento.tex
+          -s
+          --mathjax
+          -o index.html
+
+    - name: Subir la página web a internet
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: .
+        branch: gh-pages
